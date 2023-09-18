@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var falseButton: Button
     private lateinit var nextButton: Button
     private lateinit var prevButton: Button
+    private lateinit var cheatButton: Button
     private lateinit var restartButton: Button
     private lateinit var questionTextView: TextView
     private val quizViewModel: QuizViewModel by
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prev_button)
         restartButton = findViewById(R.id.restart_button)
         restartButton.visibility = View.GONE
+        cheatButton = findViewById(R.id.cheat_button)
         questionTextView = findViewById(R.id.question_text_view)
         enableButtons()
         trueButton.setOnClickListener { view: View ->
@@ -92,6 +94,12 @@ class MainActivity : AppCompatActivity() {
             enableButtons()
             getResult()
         }
+
+        cheatButton.setOnClickListener {
+
+        }
+
+
         prevButton.setOnClickListener{
             quizViewModel.moveToPrev()
             updateQuestion()
