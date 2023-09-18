@@ -12,6 +12,8 @@ class QuizViewModel : ViewModel() {
         Question(R.string.question_asia,true, false))
 
     var currentIndex = 0
+    var isCheater = false
+    var cluesLeft = 3
     var correctAnswers = 0
     var answeredQuestions = 0
 
