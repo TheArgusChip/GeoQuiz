@@ -20,23 +20,26 @@ class CheatActivity : AppCompatActivity() {
     private lateinit var versionTextView: TextView
     private lateinit var showAnswerButton: Button
     private var answerIsTrue = false
-    private var cheatCluesLeft = 0
-    private val quizViewModel: QuizViewModel by
+    private val cheatViewModel: CheatViewModel by
     lazy {
-        ViewModelProviders.of(this)[QuizViewModel::class.java]
+        ViewModelProviders.of(this)[CheatViewModel::class.java]
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cheat)
+        if (cheatViewModel.answerShown == true) setAnswerShownResult(true)
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
-        cheatCluesLeft = intent.getIntExtra(EXTRA_CLUES_LEFT, 0)
+        if (cheatViewModel.answerShown == false){
+            cheatViewModel.cheatCluesLeft = intent.getIntExtra(EXTRA_CLUES_LEFT, 0)
+        }
         answerTextView = findViewById(R.id.answer_text_view)
         cluesLeft = findViewById(R.id.clues_left)
-        cluesLeft.text = "Clues left: " + cheatCluesLeft
+        cluesLeft.text = "Clues left: " + cheatViewModel.cheatCluesLeft
         versionTextView = findViewById(R.id.version_text_view)
         versionTextView.text = "Version: " + Build.VERSION.SDK_INT
         showAnswerButton = findViewById(R.id.show_answer_button)
-        if (cheatCluesLeft <= 0) showAnswerButton.visibility = View.GONE
+        if (cheatViewModel.cheatCluesLeft <= 0) showAnswerButton.visibility = View.GONE
+        if (cheatViewModel.answerShown == true) showAnswerButton.visibility = View.GONE
         showAnswerButton.setOnClickListener {
             val answerText = when {
                 answerIsTrue -> R.string.true_button
@@ -44,8 +47,9 @@ class CheatActivity : AppCompatActivity() {
             }
             answerTextView.setText(answerText)
             setAnswerShownResult(true)
-            cheatCluesLeft --
-            cluesLeft.text = "Clues left: " + cheatCluesLeft
+            cheatViewModel.answerShown = true
+            cheatViewModel.cheatCluesLeft --
+            cluesLeft.text = "Clues left: " + cheatViewModel.cheatCluesLeft
             showAnswerButton.visibility = View.GONE
         }
     }
